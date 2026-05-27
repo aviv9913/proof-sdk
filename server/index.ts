@@ -47,6 +47,7 @@ async function main(): Promise<void> {
 
   app.use(express.json({ limit: '10mb' }));
   app.use(express.static(path.join(__dirname, '..', 'public')));
+  app.use(express.static(path.join(__dirname, '..', 'dist')));
 
   app.use((req, res, next) => {
     const originHeader = req.header('origin');
@@ -129,6 +130,7 @@ async function main(): Promise<void> {
   app.use(shareWebRoutes);
 
   setupWebSocket(wss);
+  process.env.COLLAB_EMBEDDED_WS = '1';
   await startCollabRuntimeEmbedded(PORT);
 
   server.listen(PORT, () => {
